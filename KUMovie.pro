@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,11 +13,18 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    databasecontrol.cpp \
+    addmovie.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    databasecontrol.h \
+    addmovie.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    addmovie.ui
 
-DISTFILES += \
-    database/movies.db
+DISTFILES +=
+
+RESOURCES += \
+    database.qrc

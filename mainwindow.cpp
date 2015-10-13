@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    database = new(databaseControl);
 }
 
 MainWindow::~MainWindow()
@@ -98,4 +98,9 @@ void MainWindow::on_searchListWidget_itemClicked(QListWidgetItem *item)
     qWarning()<<url.isValid();
 //    qWarning()<<url.path();
     networkManager->get(QNetworkRequest(url));  // GET
+}
+
+void MainWindow::on_SearchDbaddButton_clicked()
+{
+    database->addMovie(ui->searchNameEdit->text(),QString::number(ui->searchYearSpinBox->value()),ui->searchGenreEdit->text(),ui->searchPlotText->toPlainText());
 }

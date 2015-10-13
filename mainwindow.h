@@ -3,6 +3,7 @@
 #include <QNetworkReply>
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include "databasecontrol.h"
 namespace Ui {
 class MainWindow;
 }
@@ -23,10 +24,12 @@ private slots:
 
     void on_searchListWidget_itemClicked(QListWidgetItem *item);
 
+    void on_SearchDbaddButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QNetworkAccessManager *networkManager;
-
+    databaseControl *database;
 };
 
 #endif // MAINWINDOW_H
