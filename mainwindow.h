@@ -26,10 +26,12 @@ private slots:
 
     void on_SearchDbaddButton_clicked();
 
+    void on_scheduleAddButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QNetworkAccessManager *networkManager;
-    databaseControl *database;
+    DatabaseControl *database;
 };
 
 #endif // MAINWINDOW_H

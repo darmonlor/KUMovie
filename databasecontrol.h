@@ -7,11 +7,11 @@
 
 
 
-class databaseControl : public QObject
+class DatabaseControl : public QObject
 {
     Q_OBJECT
 public:
-    explicit databaseControl(QObject *parent = 0);
+    explicit DatabaseControl(QObject *parent = 0);
     void addMovie(QString name, QString year, QString genres,QString plot);
 
 protected:

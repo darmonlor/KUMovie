@@ -33,7 +33,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -220,9 +220,9 @@
         <item>
          <layout class="QGridLayout" name="gridLayout">
           <item row="3" column="0">
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="scheduleAddButton">
             <property name="text">
-             <string>Přidat film</string>
+             <string>Přidat film do programu</string>
             </property>
            </widget>
           </item>

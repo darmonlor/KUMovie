@@ -6,12 +6,14 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDate>
+#include "addmovie.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    database = new(databaseControl);
+    database = new(DatabaseControl);
+
 }
 
 MainWindow::~MainWindow()
@@ -103,4 +105,10 @@ void MainWindow::on_searchListWidget_itemClicked(QListWidgetItem *item)
 void MainWindow::on_SearchDbaddButton_clicked()
 {
     database->addMovie(ui->searchNameEdit->text(),QString::number(ui->searchYearSpinBox->value()),ui->searchGenreEdit->text(),ui->searchPlotText->toPlainText());
+}
+
+void MainWindow::on_scheduleAddButton_clicked()
+{
+    AddMovie * addMovie = new(AddMovie);
+    addMovie->exec();
 }
