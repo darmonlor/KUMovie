@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 #include <QNetworkReply>
 #include <QMainWindow>
-
+#include <QListWidgetItem>
 namespace Ui {
 class MainWindow;
 }
@@ -18,13 +18,14 @@ public:
 private slots:
     void on_searchButton_clicked();
     void on_get_result(QNetworkReply*);
-    void on_searchListWidget_currentRowChanged(int currentRow);
+
+
+
+    void on_searchListWidget_itemClicked(QListWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;
-    QNetworkAccessManager networkManager;
-    QNetworkRequest request;
-    QNetworkAccessManager manager2;
+    QNetworkAccessManager *networkManager;
 
 };
 

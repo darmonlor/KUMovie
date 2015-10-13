@@ -5,13 +5,12 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QDate>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(&networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(on_get_result(QNetworkReply*)));
-    connect(&manager2, SIGNAL(finished(QNetworkReply*)), this, SLOT(on_get_result(QNetworkReply*)));
 
 }
 
@@ -22,28 +21,29 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_searchButton_clicked()
 {
-
+    networkManager = new QNetworkAccessManager(this);
     QUrl url(QString("%1%2").arg("http://csfdapi.cz/movie?search=").arg(ui->searchEdit->text()));
     qWarning()<<url;
-    request.setUrl(url);
     qWarning()<<url.path();
-    networkManager.get(request);  // GET
+    connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(on_get_result(QNetworkReply*)));
+
+    networkManager->get(QNetworkRequest(url));  // GET
     //connect(&networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(on_get_result(QNetworkReply*)));
 
 }
 
 void MainWindow::on_get_result(QNetworkReply * reply)
 {
-    ui->searchListWidget->clear();
     if (reply->error() != QNetworkReply::NoError)
     {
-        ui->searchText->setText("Chyba hledání");
+        ui->searchPlotText->setText("Chyba hledání");
     }
     //ui->textEdit->setText((QString) reply->readAll());
     //ui->textEdit->setText("Done");
     QJsonDocument movieDocument=QJsonDocument::fromJson(reply->readAll());
     if (movieDocument.isArray())
     {
+        ui->searchListWidget->clear();
         qWarning() <<"test";
         QJsonArray movieList=movieDocument.array();
         qWarning() << movieList.isEmpty();
@@ -62,18 +62,40 @@ void MainWindow::on_get_result(QNetworkReply * reply)
     } else {
         QJsonObject obj = movieDocument.object();
         qWarning()<<obj;
-        ui->searchText->setText(obj.value("plot").toString());
+        ui->searchPlotText->setText(obj.value("plot").toString());
+        ui->searchYearSpinBox->setValue(obj.value("year").toInt());
+        ui->searchNameEdit->setText(obj.value("names").toObject().value("cs").toString());
+        QJsonArray genreList = obj.value("genres").toArray();
+        QString genres;
+        foreach (const QJsonValue & value, genreList) {
+            qWarning()<<value.toString();
+            genres+=value.toString();
+            if (value.toString() != genreList.last().toString())
+                genres+=", ";
+
+        }
+        ui->searchGenreEdit->setText(genres);
+        qWarning()<<genres;
     }
     reply->deleteLater();
+
 }
 
-void MainWindow::on_searchListWidget_currentRowChanged(int currentRow)
+
+
+
+void MainWindow::on_searchListWidget_itemClicked(QListWidgetItem *item)
 {
-    QUrl url(QString("%1%2").arg("http://csfdapi.cz/movie/").arg(ui->searchListWidget->currentItem()->data(Qt::UserRole).toString()));
+    qWarning() << "boohoo";
+    networkManager = new QNetworkAccessManager(this);
+    connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(on_get_result(QNetworkReply*)));
+    int linkId = item->data(Qt::UserRole).toInt();
+
+    qWarning() << linkId;
+    QUrl url(QString("%1/%2").arg("http://csfdapi.cz/movie").arg(linkId));
     //qWarning()<<ui->searchListWidget->indexAt(currentRow)->data(Qt::UserRole);
     qWarning()<<url;
-    request.setUrl(url);
     qWarning()<<url.isValid();
 //    qWarning()<<url.path();
-    manager2.get(request);  // GET
+    networkManager->get(QNetworkRequest(url));  // GET
 }
