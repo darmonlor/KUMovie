@@ -5,6 +5,9 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QSqlRecord>
+#include <QSqlField>
+#include <QTextCharFormat>
 #include <QDate>
 #include "addmovie.h"
 MainWindow::MainWindow(QWidget *parent) :
@@ -13,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     database = new(DatabaseControl);
+    calendar_redraw();
 
 }
 
@@ -111,4 +115,42 @@ void MainWindow::on_scheduleAddButton_clicked()
 {
     AddMovie * addMovie = new(AddMovie);
     addMovie->exec();
+    calendar_redraw();
+}
+
+void MainWindow::calendar_redraw()
+{
+    QSqlQuery query;
+    ui->plannerListWidget->clear();
+    ui->registerComboBox->clear();
+    query.exec("SELECT * FROM program JOIN movie_list ON program.movie_id = movie_list.ID ORDER BY datetime ASC ");
+    while(query.next())
+        {
+            QSqlRecord record;
+            record = query.record();
+            QDateTime time;
+            QTextCharFormat format;
+            format.setFontWeight(QFont::Bold);
+            QBrush brush;
+            brush.setColor(Qt::lightGray);
+            format.setBackground(brush);
+            time.setTime_t(record.field("datetime").value().toUInt());
+            if (time>QDateTime::currentDateTime())
+            {
+                QString name=record.field("name").value().toString();
+                QString itemName=QString("%1 (%2)").arg(name,time.toString());
+                int id = record.field("ID").value().toInt();
+                QListWidgetItem * item = new QListWidgetItem(itemName);
+                item->setData(Qt::UserRole,id);
+                ui->plannerListWidget->addItem(item);
+
+                ui->registerComboBox->addItem(name,id);
+                qDebug() << record.field("name").value().toString();
+                qDebug() << record;
+            }
+            ui->plannerCalendarWidget->setDateTextFormat(time.date(),format);
+            QListWidgetItem * item = new QListWidgetItem(record.field("name").value().toString());
+            ui->registerGraphicsView->setScene(ticket.render());
+//            ui->registerGraphicsView->show();
+        }
 }

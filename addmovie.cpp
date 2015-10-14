@@ -26,6 +26,7 @@ AddMovie::AddMovie(QWidget *parent) :
             ui->movieListWidget->addItem(item);
         }
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    ui->movieDateTimeEdit->setDate(QDate::currentDate());
 
 }
 

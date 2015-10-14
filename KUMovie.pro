@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     databasecontrol.cpp \
-    addmovie.cpp
+    addmovie.cpp \
+    ticket.cpp
 
 HEADERS  += mainwindow.h \
     databasecontrol.h \
-    addmovie.h
+    addmovie.h \
+    ticket.h
 
 FORMS    += mainwindow.ui \
     addmovie.ui

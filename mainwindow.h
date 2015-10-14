@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 #include "databasecontrol.h"
+#include "ticket.h"
 namespace Ui {
 class MainWindow;
 }
@@ -21,7 +22,6 @@ private slots:
     void on_get_result(QNetworkReply*);
 
 
-
     void on_searchListWidget_itemClicked(QListWidgetItem *item);
 
     void on_SearchDbaddButton_clicked();
@@ -29,9 +29,12 @@ private slots:
     void on_scheduleAddButton_clicked();
 
 private:
+
     Ui::MainWindow *ui;
     QNetworkAccessManager *networkManager;
     DatabaseControl *database;
+    void calendar_redraw();
+    Ticket ticket;
 };
 
 #endif // MAINWINDOW_H
