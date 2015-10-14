@@ -2,7 +2,7 @@
 #define ADDMOVIE_H
 #include "databasecontrol.h"
 #include <QDialog>
-
+#include <QListWidgetItem>
 namespace Ui {
 class AddMovie;
 }
@@ -17,6 +17,14 @@ public:
 
 private slots:
     void on_buttonBox_accepted();
+
+
+
+    void on_movieListWidget_itemSelectionChanged();
+
+    void on_afternoonToolButton_clicked();
+
+    void on_eveningToolButton_clicked();
 
 private:
     Ui::AddMovie *ui;

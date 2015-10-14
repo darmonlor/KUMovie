@@ -6,6 +6,8 @@
 #include <QSqlField>
 #include <QDebug>
 #include <QSqlError>
+#include <QPushButton>
+#include <QTime>
 AddMovie::AddMovie(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddMovie)
@@ -23,6 +25,7 @@ AddMovie::AddMovie(QWidget *parent) :
             item->setData(Qt::UserRole,record.field("ID").value().toInt());
             ui->movieListWidget->addItem(item);
         }
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 }
 
@@ -42,5 +45,23 @@ void AddMovie::on_buttonBox_accepted()
     qDebug()<<querystring;
     query.exec(querystring);
     qWarning()<< query.lastError();
+
+}
+
+
+
+void AddMovie::on_movieListWidget_itemSelectionChanged()
+{
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(ui->movieListWidget->selectedItems().count());
+}
+
+void AddMovie::on_afternoonToolButton_clicked()
+{
+    ui->movieDateTimeEdit->setTime(QTime(17,0,0));
+}
+
+void AddMovie::on_eveningToolButton_clicked()
+{
+    ui->movieDateTimeEdit->setTime(QTime(20,0,0));
 
 }

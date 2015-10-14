@@ -24,7 +24,7 @@ if (db.open())
 {
     QSqlQuery query(db);
     query.exec("CREATE TABLE movie_list (ID INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, year TEXT ,genres TEXT, plot TEXT);");
-    query.exec("CREATE TABLE program (ID INTEGER PRIMARY KEY AUTOINCREMENT, movie_ID INTEGER, datetime INTEGER, price INTEGER, FOREIGN KEY(movie_id) REFERENCES movie_list(ID));");
+    query.exec("CREATE TABLE program (ID INTEGER PRIMARY KEY AUTOINCREMENT, movie_id INTEGER, datetime INTEGER, price INTEGER, FOREIGN KEY(movie_id) REFERENCES movie_list(ID));");
     qWarning()<<query.lastError();
 
 }
